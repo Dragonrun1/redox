@@ -1,5 +1,5 @@
-build/libkernel.a: kernel/Cargo.toml kernel/src/* kernel/src/*/* kernel/src/*/*/* kernel/src/*/*/*/* build/initfs.tag
-# Temporary fix for https://github.com/redox-os/redox/issues/963 allowing to build on macOS
+build/libkernel.a: kernel/Cargo.lock kernel/Cargo.toml kernel/src/* kernel/src/*/* kernel/src/*/*/* kernel/src/*/*/*/* build/initfs.tag
+# Temporary fix for https://gitlab.redox-os.org/redox-os/redox/issues/963 allowing to build on macOS
 ifeq ($(UNAME),Darwin)
 	cd kernel && CC=$(ARCH)-elf-gcc AR=$(ARCH)-elf-ar CFLAGS=-ffreestanding INITFS_FOLDER=$(ROOT)/build/initfs xargo rustc --lib --target $(KTARGET) --release -- -C soft-float -C debuginfo=2 --emit link=../$@
 else
@@ -16,6 +16,8 @@ build/kernel: kernel/linkers/$(ARCH).ld build/libkernel.a
 
 build/kernel_live: kernel/linkers/$(ARCH).ld build/libkernel_live.a build/live.o
 	$(LD) --gc-sections -z max-page-size=0x1000 -T $< -o $@ build/libkernel_live.a build/live.o
+	objcopy --only-keep-debug $@ $@.sym
+	objcopy --strip-debug $@
 
 build/live.o: build/filesystem.bin
 	#TODO: More general use of $(ARCH)

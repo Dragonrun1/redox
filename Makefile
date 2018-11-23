@@ -40,10 +40,8 @@ fetch:
 		"$$(cargo run --manifest-path ../installer/Cargo.toml -- --list-packages -c ../initfs.toml)" \
 		"$$(cargo run --manifest-path ../installer/Cargo.toml -- --list-packages -c ../filesystem.toml)"
 
-# Emulation recipes
-include mk/qemu.mk
-include mk/bochs.mk
-include mk/virtualbox.mk
+# Cross compiler recipes
+include mk/prefix.mk
 
 # Kernel recipes
 include mk/kernel.mk
@@ -55,23 +53,33 @@ include mk/filesystem.mk
 # Disk images
 include mk/disk.mk
 
+# Emulation recipes
+include mk/qemu.mk
+include mk/bochs.mk
+include mk/virtualbox.mk
+
 # CI image target
 ci-img: FORCE
-	make INSTALLER_FLAGS= build/harddrive.bin.gz build/harddrive-efi.bin.gz build/livedisk.iso build/livedisk-efi.iso
+	make INSTALLER_FLAGS= build/harddrive.bin.gz build/livedisk.iso #build/harddrive-efi.bin.gz build/livedisk-efi.iso
 	rm -rf build/img
 	mkdir build/img
 	mv build/harddrive.bin.gz build/img/redox_$(IMG_TAG)_harddrive.bin.gz
 	mv build/livedisk.iso build/img/redox_$(IMG_TAG)_livedisk.iso
-	mv build/harddrive-efi.bin.gz build/img/redox_$(IMG_TAG)_harddrive-efi.bin.gz
-	mv build/livedisk-efi.iso build/img/redox_$(IMG_TAG)_livedisk-efi.iso
+	#mv build/harddrive-efi.bin.gz build/img/redox_$(IMG_TAG)_harddrive-efi.bin.gz
+	#mv build/livedisk-efi.iso build/img/redox_$(IMG_TAG)_livedisk-efi.iso
 	cd build/img && sha256sum -b * > SHA256SUM
 
 # CI packaging target
-ci-pkg: FORCE
-	cd cookbook && ./fetch.sh \
-		"$$(cargo run --manifest-path ../installer/Cargo.toml -- --list-packages -c ../ci.toml)"
-	cd cookbook && ./repo.sh \
-		"$$(cargo run --manifest-path ../installer/Cargo.toml -- --list-packages -c ../ci.toml)"
+ci-pkg: prefix FORCE
+	export PATH="$(PREFIX_PATH):$$PATH" && \
+	PACKAGES="$$(cargo run --manifest-path installer/Cargo.toml -- --list-packages -c ci.toml)" && \
+	cd cookbook && \
+	./fetch.sh "$${PACKAGES}" && \
+	./repo.sh "$${PACKAGES}"
+
+env: prefix FORCE
+	export PATH="$(PREFIX_PATH):$$PATH" && \
+	bash
 
 # An empty target
 FORCE:

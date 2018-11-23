@@ -1,5 +1,5 @@
 <p align="center">
-<img alt="Redox" width="346" src="https://github.com/redox-os/assets/raw/master/logos/redox/logo.png">
+<img alt="Redox" width="346" src="https://gitlab.redox-os.org/redox-os/assets/raw/master/logos/redox/logo.png">
 </p>
 
 **Redox** is an operating system written in Rust, a language with focus on safety and high performance. Redox, following the microkernel design, aims to be secure, usable, and free. Redox is inspired by previous kernels and operating systems, such as SeL4, MINIX, Plan 9, and BSD.
@@ -11,7 +11,7 @@ The website can be found at https://www.redox-os.org.
 Please make sure you use the **latest nightly** of `rustc` before building (for more troubleshooting, see ["Help! Redox won't compile!"](#compile-help)).
 
 [![Travis Build Status](https://travis-ci.org/redox-os/redox.svg?branch=master)](https://travis-ci.org/redox-os/redox)
-[![Downloads](https://img.shields.io/github/downloads/redox-os/redox/total.svg)](https://github.com/redox-os/redox/releases)
+[![Downloads](https://img.shields.io/github/downloads/redox-os/redox/total.svg)](https://gitlab.redox-os.org/redox-os/redox/tags)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 ![Rust Version](https://img.shields.io/badge/rust-nightly%202017--10--03-lightgrey.svg)
 
@@ -28,63 +28,60 @@ Please make sure you use the **latest nightly** of `rustc` before building (for 
 
 ## <a name="screenshots"> What it looks like </a>
 
-<img alt="Redox" height="150" src="https://github.com/redox-os/assets/raw/master/screenshots/Senza%20titolo.jpeg">
-<img alt="Redox" height="150" src="https://github.com/redox-os/assets/raw/master/screenshots/redox running.jpeg">
-<img alt="Redox" height="150" src="https://github.com/redox-os/assets/raw/master/screenshots/IMG_1460.PNG">
+<img alt="Redox" height="150" src="https://gitlab.redox-os.org/redox-os/assets/raw/master/screenshots/Senza%20titolo.jpeg">
+<img alt="Redox" height="150" src="https://gitlab.redox-os.org/redox-os/assets/raw/master/screenshots/redox running.jpeg">
+<img alt="Redox" height="150" src="https://gitlab.redox-os.org/redox-os/assets/raw/master/screenshots/IMG_1460.PNG">
 
-<img alt="Redox" height="150" src="https://github.com/redox-os/assets/raw/master/screenshots/Sodium_v2.PNG">
-<img alt="Redox" height="150" src="https://github.com/redox-os/assets/raw/master/screenshots/Boot.png">
-<img alt="Redox" height="150" src="https://github.com/redox-os/assets/raw/master/screenshots/IMG_1459.PNG">
+<img alt="Redox" height="150" src="https://gitlab.redox-os.org/redox-os/assets/raw/master/screenshots/Sodium_v2.PNG">
+<img alt="Redox" height="150" src="https://gitlab.redox-os.org/redox-os/assets/raw/master/screenshots/Boot.png">
+<img alt="Redox" height="150" src="https://gitlab.redox-os.org/redox-os/assets/raw/master/screenshots/IMG_1459.PNG">
 
 ## <a name="ecosystem"> Ecosystem </a>
 
 The ecosystem and software Redox OS provides is listed below.
 
-| Name (lexicographic order)                                                  | Maintainer
-|-----------------------------------------------------------------------------|---------------------------
-| [acid (kernel integration tests)](https://github.com/redox-os/acid)                              | [**@jackpot51**](https://github.com/jackpot51) (co.: [**@ticki**](https://github.com/ticki), [**@nilset](https://github.com/nilset))
-| [binutils](https://github.com/redox-os/binutils)                            | [**@ticki**](https://github.com/ticki)
-| [bots (custom Mattermost bots)](https://github.com/redox-os/bots)              | [**@ticki**](https://github.com/ticki)
-| [cookbook](https://github.com/redox-os/cookbook)                            | [**@jackpot51**](https://github.com/jackpot51)
-| [coreutils](https://github.com/redox-os/coreutils)                          | [**@ticki**](https://github.com/ticki) (co.: [**@stratact**](https://github.com/stratact))
-| [extrautils](https://github.com/redox-os/extrautils)                        | [**@ticki**](https://github.com/ticki)
-| [games](https://github.com/redox-os/games)                                  | [**@ticki**](https://github.com/ticki)
-| [Ion (shell)](https://github.com/redox-os/ion)                              | [**@skylerberg**](https://github.com/skylerberg) & [**@jackpot51**](https://github.com/jackpot51)
-| [kernel](https://github.com/redox-os/kernel)                                | [**@jackpot51**](https://github.com/jackpot51)
-| [libextra](https://github.com/redox-os/libextra)                            | [**@ticki**](https://github.com/ticki)
-| [libpager](https://github.com/redox-os/libpager)                            | [**@ticki**](https://github.com/ticki)
-| [netutils](https://github.com/redox-os/netutils)                            | [**@jackpot51**](https://github.com/jackpot51)
-| [orbclient (Orbital client)](https://github.com/redox-os/orbclient)                          | [**@jackpot51**](https://github.com/jackpot51)
-| [orbdata](https://github.com/redox-os/orbdata)                              | [**@jackpot51**](https://github.com/jackpot51)
-| [orbgame (Orbital 2D game engine)](https://github.com/redox-os/orbgame)                              | [**@FloVanGH**](https://github.com/FloVanGH)
-| [Orbital (windowing and compositing system)](https://github.com/redox-os/orbital)                              | [**@jackpot51**](https://github.com/jackpot51)
-| [orbtk (Orbital toolkit)](https://github.com/redox-os/orbtk)                                  | [**@stratact**](https://github.com/stratact)
-| [orbutils (Orbital utilities)](https://github.com/redox-os/orbutils)                            | [**@jackpot51**](https://github.com/jackpot51)
-| [pkgutils (current package manager)](https://github.com/redox-os/pkgutils)  | [**@jackpot51**](https://github.com/jackpot51)
-| [playbot (internal REPL bot)](https://github.com/redox-os/playbot)          | [**@ticki**](https://github.com/ticki)
-| [ralloc](https://github.com/redox-os/ralloc)                                | [**@ticki**](https://github.com/ticki)
-| [RANSID (Rust ANSI driver)](https://github.com/redox-os/ransid)                                | [**@jackpot51**](https://github.com/jackpot51)
-| [redoxfs (old filesystem)](https://github.com/redox-os/redoxfs)             | [**@jackpot51**](https://github.com/jackpot51)
-| [syscall](https://github.com/redox-os/syscall)                              | [**@jackpot51**](https://github.com/jackpot51)
-| [Sodium (Vim-inspired text editor)](https://github.com/redox-os/sodium)                       | [**@ticki**](https://github.com/ticki)
-| [TFS (ticki filesystem)](https://github.com/ticki/tfs)                            | [**@ticki**](https://github.com/ticki)
-| [The Redox book](https://github.com/redox-os/book)                          | [**@ticki**](https://github.com/ticki)
-| [userutils](https://github.com/redox-os/userutils)                          | [**@jackpot51**](https://github.com/jackpot51)
-| [libstd](https://github.com/Yoric/libstd)                      | **abandoned, Rust's official libstd is now used**
-| The old kernel                                                              | **abandoned**
-| [ZFS](https://github.com/redox-os/zfs)                                      | **abandoned, superseded by [TFS](https://github.com/ticki/tfs)**
+| Name (lexicographic order)                                                           | Maintainer
+|--------------------------------------------------------------------------------------|---------------------------
+| [acid (kernel integration tests)](https://gitlab.redox-os.org/redox-os/acid)         | **@jackpot51** **@NilSet**
+| [binutils](https://gitlab.redox-os.org/redox-os/binutils)                            | **vacant**
+| [cookbook](https://gitlab.redox-os.org/redox-os/cookbook)                            | **@jackpot51** **@ids1024** **@sajattack**
+| [coreutils](https://gitlab.redox-os.org/redox-os/coreutils)                          | **vacant**
+| [extrautils](https://gitlab.redox-os.org/redox-os/extrautils)                        | **vacant**
+| [games](https://gitlab.redox-os.org/redox-os/games)                                  | **@enrico** (AKA **@HenryTheCat**) **@fabiao**
+| [Ion (shell)](https://gitlab.redox-os.org/redox-os/ion)                              | **@mmstick** **@stratact**
+| [ipcd](https://gitlab.redox-os.org/redox-os/ipcd)                                    | **@jD91mZM2**
+| [kernel](https://gitlab.redox-os.org/redox-os/kernel)                                | **@jackpot51**
+| [libextra](https://gitlab.redox-os.org/redox-os/libextra)                            | **vacant**
+| [libpager](https://gitlab.redox-os.org/redox-os/libpager)                            | **vacant**
+| [netstack](https://gitlab.redox-os.org/redox-os/netstack)                            | **@batonius** **@dlrobertson**
+| [netutils](https://gitlab.redox-os.org/redox-os/netutils)                            | **@jackpot51**
+| [orbclient (Orbital client)](https://gitlab.redox-os.org/redox-os/orbclient)         | **@jackpot51** **@FloVanGH**
+| [orbdata](https://gitlab.redox-os.org/redox-os/orbdata)                              | **@jackpot51**
+| [orbgame (Orbital 2D game engine)](https://gitlab.redox-os.org/redox-os/orbgame)     | **@FloVanGH**
+| [Orbital (windowing and compositing system)](https://gitlab.redox-os.org/redox-os/orbital) | **@jackpot51**
+| [orbtk (Orbital toolkit)](https://gitlab.redox-os.org/redox-os/orbtk)                | **@FloVanGH**
+| [orbutils (Orbital utilities)](https://gitlab.redox-os.org/redox-os/orbutils)        | **@jackpot51**
+| [pkgutils (current package manager)](https://gitlab.redox-os.org/redox-os/pkgutils)  | **@jackpot51**
+| [ralloc](https://gitlab.redox-os.org/redox-os/ralloc)                                | **@Tommoa** **@NilSet**
+| [RANSID (Rust ANSI driver)](https://gitlab.redox-os.org/redox-os/ransid)             | **@jackpot51**
+| [redoxfs (old filesystem)](https://gitlab.redox-os.org/redox-os/redoxfs)             | **@jackpot51**
+| [relibc (C Library in Rust)](https://gitlab.redox-os.org/redox-os/relibc)            | **@jD91mZM2** **@sajattack** **@Tommoa** **@stratact**
+| [small (stack String and other collections)](https://gitlab.redox-os.org/redox-os/small) | **@Tommoa**
+| [syscall](https://gitlab.redox-os.org/redox-os/syscall)                              | **@jackpot51**
+| [Sodium (Vim-inspired text editor)](https://gitlab.redox-os.org/redox-os/sodium)     | **vacant**
+| [TFS ((ticki) **T**he **F**ile **S**ystem)](https://gitlab.redox-os.org/redox-os/tfs) | **@Tommoa**
+| [The Redox book](https://gitlab.redox-os.org/redox-os/book)                          | **vacant**
+| [userutils](https://gitlab.redox-os.org/redox-os/userutils)                          | **@jackpot51**
 
 ## <a name="compile-help"> Help! Redox won't compile! </a>
 
 Sometimes things go wrong when compiling. Try the following before opening an issue:
 
-1. Make sure you have a Redox toolchain (`x86_64-unknown-redox-gcc`).
-    * You can install from .deb packages (`https://static.redox-os.org/toolchain/apt/`) or build [redox-os/libc](https://github.com/redox-os/libc) manually.
 1. Run `rustup update`
 1. Run `make clean pull`.
 1. Make sure you have **the latest version of Rust nightly!** ([rustup.rs](https://www.rustup.rs) is recommended for managing Rust versions. If you already have it, run `rustup`).
 1. Update **GNU Make**, **NASM** and **QEMU/VirtualBox**.
-1. Pull the upstream master branch (`git remote add upstream git@github.com:redox-os/redox.git; git pull upstream master`).
+1. Pull the upstream master branch (`git remote add upstream git@gitlab.redox-os.org:redox-os/redox.git; git pull upstream master`).
 1. Update submodules (`git submodule update --recursive --init`).
 
 and then rebuild!
@@ -103,7 +100,7 @@ Redox is big, even compressed. Downloading the full history may take a lot of ba
 $ cd path/to/your/projects/folder/
 
 # Run bootstrap setup
-$ curl -sf https://raw.githubusercontent.com/redox-os/redox/master/bootstrap.sh -o bootstrap.sh && bash -e bootstrap.sh
+$ curl -sf https://gitlab.redox-os.org/redox-os/redox/raw/master/bootstrap.sh -o bootstrap.sh && bash -e bootstrap.sh
 
 # Change to project directory
 $ cd redox
@@ -128,9 +125,9 @@ To manually clone, build and run Redox using a Unix-based host, run the followin
 $ cd path/to/your/projects/folder/
 
 # HTTPS
-$ git clone https://github.com/redox-os/redox.git --origin upstream --recursive
+$ git clone https://gitlab.redox-os.org/redox-os/redox.git --origin upstream --recursive
 # SSH
-$ git clone git@github.com:redox-os/redox.git --origin upstream --recursive
+$ git clone git@gitlab.redox-os.org:redox-os/redox.git --origin upstream --recursive
 
 $ cd redox/
 
