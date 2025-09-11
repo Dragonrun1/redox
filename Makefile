@@ -1,93 +1,111 @@
-# Configuration and variables
+# This file contains the build system commands configuration
+# and environment variables
 include mk/config.mk
 
-all: build/harddrive.bin
+# Build system dependencies
+include mk/depends.mk
 
-live: build/livedisk.bin
+all: $(BUILD)/harddrive.img
 
-iso: build/livedisk.iso
+live:
+	-$(FUMOUNT) $(BUILD)/filesystem/ || true
+	-$(FUMOUNT) /tmp/redox_installer/ || true
+	rm -f $(BUILD)/redox-live.iso
+	$(MAKE) $(BUILD)/redox-live.iso
 
-clean:
+popsicle: $(BUILD)/redox-live.iso
+	popsicle-gtk $(BUILD)/redox-live.iso
+
+image:
+	-$(FUMOUNT) $(BUILD)/filesystem/ || true
+	-$(FUMOUNT) /tmp/redox_installer/ || true
+	rm -f $(BUILD)/harddrive.img $(BUILD)/redox-live.iso
+	$(MAKE) all
+
+rebuild:
+	-$(FUMOUNT) $(BUILD)/filesystem/ || true
+	-$(FUMOUNT) /tmp/redox_installer/ || true
+	rm -rf $(BUILD)/repo.tag $(BUILD)/harddrive.img $(BUILD)/redox-live.iso
+	$(MAKE) all
+
+clean: $(CONTAINER_TAG)
+ifeq ($(PODMAN_BUILD),1)
+	$(PODMAN_RUN) make $@
+else
 	cd cookbook && ./clean.sh
-	cargo clean --manifest-path cookbook/pkgutils/Cargo.toml
-	cargo clean --manifest-path installer/Cargo.toml
-	cargo clean --manifest-path kernel/Cargo.toml
-	cargo clean --manifest-path kernel/syscall/Cargo.toml
-	cargo clean --manifest-path redoxfs/Cargo.toml
-	-$(FUMOUNT) build/filesystem/ || true
-	rm -rf build
+	-rm -rf cookbook/repo
+	$(MAKE) fstools_clean
+	$(HOST_CARGO) clean --manifest-path relibc/Cargo.toml
+endif
+	-$(FUMOUNT) $(BUILD)/filesystem/ || true
+	-$(FUMOUNT) /tmp/redox_installer/ || true
+	rm -rf $(BUILD) $(PREFIX)
 
-distclean:
-	make clean
+distclean: $(CONTAINER_TAG)
+ifeq ($(PODMAN_BUILD),1)
+	$(PODMAN_RUN) make $@
+else
+	$(MAKE) clean
 	cd cookbook && ./unfetch.sh
+endif
 
 pull:
-	git pull --recurse-submodules
+	git pull
 	git submodule sync --recursive
 	git submodule update --recursive --init
 
-update:
-	cd cookbook && ./update.sh \
-		"$$(cargo run --manifest-path ../installer/Cargo.toml -- --list-packages -c ../initfs.toml)" \
-		"$$(cargo run --manifest-path ../installer/Cargo.toml -- --list-packages -c ../filesystem.toml)"
-	cargo update --manifest-path cookbook/pkgutils/Cargo.toml
-	cargo update --manifest-path installer/Cargo.toml
-	cargo update --manifest-path kernel/Cargo.toml
-	cargo update --manifest-path redoxfs/Cargo.toml
+fetch: $(BUILD)/fetch.tag
 
-fetch:
-	cd cookbook && ./fetch.sh \
-		"$$(cargo run --manifest-path ../installer/Cargo.toml -- --list-packages -c ../initfs.toml)" \
-		"$$(cargo run --manifest-path ../installer/Cargo.toml -- --list-packages -c ../filesystem.toml)"
+repo: $(BUILD)/repo.tag
+
+# Podman build recipes and vars
+include mk/podman.mk
+
+# Disk Imaging and Cookbook tools
+include mk/fstools.mk
 
 # Cross compiler recipes
 include mk/prefix.mk
 
-# Kernel recipes
-include mk/kernel.mk
-
-# Filesystem recipes
-include mk/initfs.mk
-include mk/filesystem.mk
+# Repository maintenance
+include mk/repo.mk
 
 # Disk images
 include mk/disk.mk
 
 # Emulation recipes
 include mk/qemu.mk
-include mk/bochs.mk
 include mk/virtualbox.mk
 
-# CI image target
-ci-img: FORCE
-	make INSTALLER_FLAGS= build/harddrive.bin.gz build/livedisk.iso #build/harddrive-efi.bin.gz build/livedisk-efi.iso
-	rm -rf build/img
-	mkdir build/img
-	mv build/harddrive.bin.gz build/img/redox_$(IMG_TAG)_harddrive.bin.gz
-	mv build/livedisk.iso build/img/redox_$(IMG_TAG)_livedisk.iso
-	#mv build/harddrive-efi.bin.gz build/img/redox_$(IMG_TAG)_harddrive-efi.bin.gz
-	#mv build/livedisk-efi.iso build/img/redox_$(IMG_TAG)_livedisk-efi.iso
-	cd build/img && sha256sum -b * > SHA256SUM
+# CI
+include mk/ci.mk
 
-# CI packaging target
-ci-pkg: prefix FORCE
-	export PATH="$(PREFIX_PATH):$$PATH" && \
-	PACKAGES="$$(cargo run --manifest-path installer/Cargo.toml -- --list-packages -c ci.toml)" && \
-	cd cookbook && \
-	./fetch.sh "$${PACKAGES}" && \
-	./repo.sh "$${PACKAGES}"
-
-env: prefix FORCE
+env: prefix FORCE $(CONTAINER_TAG)
+ifeq ($(PODMAN_BUILD),1)
+	$(PODMAN_RUN) make $@
+else
 	export PATH="$(PREFIX_PATH):$$PATH" && \
 	bash
+endif
+
+export RUST_GDB=gdb-multiarch # Necessary when debugging for another architecture than the host
+GDB_KERNEL_FILE=cookbook/recipes/core/kernel/target/$(TARGET)/build/kernel.sym
+gdb: FORCE
+	rust-gdb $(GDB_KERNEL_FILE) --eval-command="target remote :1234"
+
+# This target allows debugging a userspace application without requiring gdbserver running inside
+# the VM. Because gdb doesn't know when the userspace application is scheduled by the kernel and as
+# it stops the entire VM rather than just the userspace application that the user wants to debug,
+# connecting to a gdbserver running inside the VM is highly encouraged when possible. This target
+# should only be used when the application to debug runs early during boot before the network stack
+# has started or you need to debug the interaction between the application and the kernel.
+# tl;dr: DO NOT USE THIS TARGET UNLESS YOU HAVE TO
+gdb-userspace: FORCE
+	rust-gdb $(GDB_APP_FILE) --eval-command="add-symbol-file $(GDB_KERNEL_FILE)" --eval-command="target remote :1234"
 
 # An empty target
 FORCE:
 
-# A method of creating a listing for any binary
-%.list: %
-	objdump -C -M intel -D $< > $@
-
 # Wireshark
 wireshark: FORCE
-	wireshark build/network.pcap
+	wireshark $(BUILD)/network.pcap

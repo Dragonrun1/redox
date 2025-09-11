@@ -1,205 +1,248 @@
 # Contributing to Redox
 
-_**Thank you for your interest in contributing to Redox!** This document will outline the basics of where to start if you wish to contribute to the project. There are many ways to help us out and and we appreciate all of them. We look forward to **your contribution**!_
+**Thank you for your interest in contributing to Redox!**
 
-## Index
+This document will outline the basics of where to start if you wish to contribute to the project. There are many ways to help us out and and we appreciate all of them. We look forward to **your contribution!**
 
-* [Communication](#communication)
- * [Chat](#chat)
- * [GitLab Issues](#issues)
- * [Pull Requests](#prs)
- * [Discourse](#discourse)
- * [Reddit](#reddit)
- * [News](#news)
-* [Code Contributions](#code-contributions)
- * [Low-Hanging Fruit - Easy Targets for Newbies](#easy-targets)
- * [Creating a Pull Request](#creating-a-pr)
-* [Best Practices/Guidelines](#best-practices)
- * [General](#general)
- * [Kernel](#kernel)
- * [Testing Practices](#testing-practices)
-* [Style Guidelines](#style-guidelines)
- * [Rust](#rust-style-guidelines)
- * [Git](#git-style-guidelines)
-* [Other Ways to Contribute](#other)
- * [Graphic Design](#graphic-design)
- * [Patreon](#patreon)
+**Please read this document until the end**
 
-## <a name="extern-links"> Other External Links </a>
+## Code Of Conduct
 
-* [redox-os.org](https://redox-os.org)
-* [rust-os-comparison](https://github.com/flosse/rust-os-comparison)
-* [rust-lang.org](http://rust-lang.org)
+We follow the [Rust Code Of Conduct](https://www.rust-lang.org/policies/code-of-conduct).
 
-## <a name="communication"> Communication </a>
+## License
 
-### <a name="chat"> Chat </a>
+In general, your contributions to Redox are governed by the [MIT License](https://en.wikipedia.org/wiki/MIT_License). Each project repository has a `LICENSE` file that provides the license terms for that project.
 
-The quickest and most open way to **communicate with the Redox team** is on our **chat server**. Currently, you can only get an invite by sending an email request to [info@redox-os.org](mailto:info@redox-os.org), which might take a little while, since it's not automated. Simply say you'd like to join the chat. We're working on an better way to do this, but this is the best way right now.
+Please review the `LICENSE` file for the project you are contributing to.
 
-### <a name="issues"> GitLab Issues </a>
+[This](https://doc.redox-os.org/book/philosophy.html) page we explain why we use the MIT license.
 
-A bit more formal way of communication with fellow Redox devs, but a little less quick and convenient like the chat. Submit an issue when you run into problems compiling, testing, or just would like to discuss a certain topic, be it _features, code style, code inconsistencies, minor changes and fixes, etc._
+## Chat
 
-### <a name="prs"> Pull Requests </a>
+You can join in our chat platforms to discuss development, issues or ask questions.
 
-It's fine to just submit a small pull request without first making an issue or asking in the chat, **unless** it's a significant change that will require a lot of planning and reviewing. Also see [Creating a Pull Request](#creating-a-pr) and [Git Style Guidelines](#git-style-guidelines).
+### [Matrix](https://matrix.to/#/#redox-join:matrix.org)
 
-### <a name="discourse"> Discourse </a>
+Matrix is the official way to talk with Redox OS team and community (these rooms are English-only, we don't accept other languages because we don't understand them).
 
-We have a **discourse forum** at [discourse.redox-os.org](https://discourse.redox-os.org). This is the best way to discuss more general topics that aren't about specific things that need to be addressed one way or another. You can sign up like any other website.
+Matrix has several different clients. [Element](https://element.io/) is a commonly used choice, it works on web browsers, Linux, MacOSX, Windows, Android and iOS.
 
-### <a name="reddit"> Reddit </a>
+If you have problems with Element, try [Fractal](https://gitlab.gnome.org/World/fractal).
 
-You can also find **Redox on Reddit** in [/r/rust/](https://www.reddit.com/r/rust) and [/r/redox/](https://www.reddit.com/r/redox). Redox news and discussion is posted on the latter, and Rust news and discussion, as well as some Redox posts, is on the former.
+- Join the [Join Requests](https://matrix.to/#/#redox-join:matrix.org) room and send a message requesting for an invite to the Redox Matrix space (the purpose of this is to avoid spam and bots).
+- #redox-join:matrix.org (Use this Matrix room address if you don't want to use the external Matrix link)
 
-### <a name="news"> News </a>
+(We recommend that you leave the "Join Requests" room after your entry on Redox space)
 
-News and updates for Redox are posted at [redox-os.org/news](https://redox-os.org/news). It's more one-way than the other things on this list, but it should provide a good summary of what's been going on with the project lately. It's usually updated weekly, but with some exceptions. A mailing list may be included eventually, but it's not set up right now.
+If you want to have a big discussion in our rooms, you should use a Element thread, it's more organized and easy to keep track if more discussions happen on the same room.
 
-## <a name="code-contributions"> Code Contributions </a>
+You cand find more information on the [Chat](https://doc.redox-os.org/book/chat.html) page.
 
-### <a name="easy-targets"> Low-Hanging Fruit - Easy Targets for Newbies </a>
+### [Discord](https://discord.gg/JfggvrHGDY)
 
-#### If you're not fluent in Rust:
+We have a Discord server as an alternative for Matrix, open the #join-requests channel and send a message requesting to be a member (the purpose of this is to avoid spam and bots)
 
- * Writing _documentation_
- * **Using/testing Redox**, filing issues for bugs and needed features
- * **Web development** ([Redox website, separate repo](https://gitlab.redox-os.org/redox-os/website))
- * **Writing unit tests** (may require minimal knowledge of rust)
+The Matrix messages are sent to Discord and vice-versa using a bot, but sometimes some Discord messages aren't sent to Matrix (if this happens to you join in our Matrix space above)
 
-#### If you are fluent in Rust, but not OS Development:
+## [GitLab](https://gitlab.redox-os.org/redox-os/redox)
 
- * **Apps** development
- * **Shell** ([Ion](https://gitlab.redox-os.org/redox-os/ion)) development
- * **Package management** ([pkgutils](https://gitlab.redox-os.org/redox-os/pkgutils)) development
- * Other high-level code tasks
+A slightly more formal way of communication with fellow Redox developers, but a little less quick and convenient like the chat. Submit an issue when you run into problems compiling or testing. Issues can also be used if you would like to discuss a certain topic: be it features, code style, code inconsistencies, minor changes and fixes, etc.
 
-#### If you are fluent in Rust, and have experience with OS Dev:
+If you want to create an account, read the [Signing in to GitLab](https://doc.redox-os.org/book/signing-in-to-gitlab.html) page.
 
- * Familiarize yourself with the repository and codebase
- * Grep for `TODO`, `FIXME`, `BUG`, `UNOPTIMIZED`, `REWRITEME`, `DOCME`, and `PRETTYFYME` and fix the code you find.
- * **Improve and optimize code, especially in the kernel**
+Once you create an issue don't forget to post the link on the Dev or Support rooms of the chat, because the GitLab email notifications have distractions (service messages or spam) and most developers don't left their GitLab pages open to receive desktop notifications from the web browser (which require a custom setting to receive issue notifications).
 
-### <a name="creating-a-pr"> Creating a Pull Request </a>
+By doing this you help us to pay attention to your issues and avoid them to be accidentally forgotten.
 
-**1**. _**Fork**_ the repository
+If you have ready MRs (merge requests) you must send the links in the [MRs](https://matrix.to/#/#redox-mrs:matrix.org) room. To join this room, you will need to request an invite in the [Join Requests](https://matrix.to/#/#redox-join:matrix.org) room.
 
-**2**. Clone the _original repository_ to your local PC using one of the following commands based on the protocol you are using:
- * HTTPS:`git clone https://gitlab.redox-os.org/redox-os/redox.git --origin upstream --recursive`
- * SSH:`git clone git@gitlab.redox-os.org:redox-os/redox.git --origin upstream --recursive`
- * Then rebase: `git rebase upstream master`
- If you use HTTPS, you will have to log in each time when pushing to your fork. (Recommended: learn about git SSH support, it logs in automatically using SSH keys)
- 
-**3**. **Add** your fork with
- * HTTPS:`git remote add origin https://gitlab.redox-os.org/your-username/redox.git`
- * SSH:`git remote add origin git@gitlab.redox-os.org:your-username/redox.git`
- 
-**4**. Alternatively, if you already have a fork and copy of the repo, you can simply check to **make sure you're up-to-date**
- * Pull the upstream:`git pull upstream --rebase`
- * Update the submodules:`git submodule update --recursive --init`
- 
-**5**. Create a _**separate branch**_ (recommended if you're making multiple changes simultaneously) (`git checkout -b my-branch`)
+By sending a message in the room, your MR will not be forgotten or accumulate conflicts.
 
-**6**. _Make changes_
+## Best Practices and Guidelines
 
-**7**. **Commit** (`git add <item(s) you changed>; git commit`) and write your commit message
+You can read the best practices and guidelines on the [Best practices and guidelines](https://doc.redox-os.org/book/best-practices.html) chapter.
 
-**8**. Optionally run [rustfmt](https://github.com/rust-lang-nursery/rustfmt) on the _files you changed_ and commit again if it did anything (check with `git diff` first)
+## Style Guidelines
 
-**9**. Test your changes by **cleaning** (`make clean; git clean -Xfd`) and **building** with `make qemu` (you might have to use `make qemu kvm=no`) or `make virtualbox`.
-(see [Best Practices and Guidelines](#best-practices))
+### Rust
 
-**10**. _**Pull**_ from upstream (`git pull upstream --rebase`) (Note: Make sure to include `--rebase`, as it will apply your changes on top of the changes you just pulled, allowing for a much cleaner merge)
+Since **Rust** is a relatively small and new language compared to others like C and C++, there's really only one standard. Just follow the official Rust standards for formatting, and maybe run `rustfmt` on your changes, until we setup the CI system to do it automatically.
 
-**11**. Repeat step **9** to make sure the rebase still builds and starts
+### Git
 
-**12**. Push to **your fork** (`git push origin <branch>`), `<branch>` being the branch you created earlier
+Please follow our [Git style](https://doc.redox-os.org/book/creating-proper-pull-requests.html) for pull requests.
 
-**13**. Create a _pull request_
+## GitLab
 
-**14**. If your changes are _minor_, you can just describe them in a paragraph or less. If they're _major_, please fill out the provided form.
+### Identity
 
-**15. Submit!**
+Once your GitLab account is created, you should add your Matrix or Discord username (the name after the `@` symbol) on the "About" section of your profile, that way we recognize you properly.
 
-## <a name="best-practices"> Best Practices and Guidelines </a>
+### Issues
 
-### <a name="general"> General </a>
+We use issues to organize and track our current and pending work, to know how to create issues on the Redox GitLab read the [Filing Issues](https://doc.redox-os.org/book/filing-issues.html) page.
 
-* **Remember to do a `git rebase -i upstream/master` before you send your patch!**
-* **Make sure your code is readable, commented, and well-documented.**
-* **Don't hesitate to ask for help, comments or suggestions!**
-* **Before implementing something, discuss it! Open an issue, or ask in the chat.**
+Once you create an issue don't forget to post the link on the Dev or Support rooms of the chat, because the GitLab email notifications have distractions (service messages or spam) and most developers don't left their GitLab pages open to receive desktop notifications from the web browser (which require a custom setting to receive issue notifications).
 
-##### On the more technical side:
-* Test, test, and test!
-* Follow the style conventions (See [rust style guidelines](#rust-style-guidelines))
-* Use `std::mem::replace` and `std::mem::swap` when you can.
-* `libredox` should be 1-to-1 with the official `libstd`.
-* Prefer `.into()` and `.to_owned()` over `.to_string()`.
-* Prefer passing references to the data over owned data. (Don't take `String`, take `&str`. Don't take `Vec<T>` take `&[T]`).
-* Use generics, traits, and other abstractions Rust provides.
-* Avoid using lossy conversions (for example: don't do `my_u32 as u16 == my_u16`, prefer `my_u32 == my_u16 as u32`).
-* Prefer in place (`box` keyword) when doing heap allocations.
-* Prefer platform independently sized integer over pointer sized integer (`u32` over `usize`, for example).
-* Follow the usual idioms of programming, such as "composition over inheritance", "let your program be divided in smaller pieces", and "resource acquisition is initialization".
-* When `unsafe` is unnecessary, don't use it. **Longer safe code is better than shorter unsafe code!**
-* Be sure to mark parts that need work with `TODO`, `FIXME`, `BUG`, `UNOPTIMIZED`, `REWRITEME`, `DOCME`, and `PRETTYFYME`. Always elaborate on these messages, too. Nothing is more annoying than seeing a `TODO` and not knowing how to actually fix it.
-* Use the compiler hint attributes, such as `#[inline]`, `#[cold]`, etc. when it makes sense to do so.
-* Check the [chat](#chat), [the website](http://redox-os.org/news), and [the Rust subreddit](https://www.reddit.com/r/rust) frequently.
+By doing this you help us to pay attention to your issues and avoid them to be accidentally forgotten.
 
-### <a name="kernel"> Kernel </a>
+You can see all issues on [this](https://gitlab.redox-os.org/groups/redox-os/-/issues) link.
 
-* When trying to access a slice, **always** use the `common::GetSlice` trait and the `.get_slice()` method to get a slice without causing the kernel to panic.
-  The problem with slicing in regular Rust, e.g. `foo[a..b]`, is that if someone tries to access with a range that is out of bounds of an array/string/slice, it will cause a panic at runtime, as a safety measure. Same thing when accessing an element.
-  Always use `foo.get(n)` instead of `foo[n]` and try to cover for the possibility of `Option::None`. Doing the regular way may work fine for applications, but never in the kernel. No possible panics should ever exist in kernel space, because then the whole OS would just stop working.
+### Pull Requests
 
-### <a name="testing-practices"> Testing Practices </a>
+Please follow [our process](https://doc.redox-os.org/book/creating-proper-pull-requests.html) for creating proper pull requests.
 
-* It's always better to test boot (`make qemu` or `make virtualbox`) every time you make a change, because it is important to see how the OS boots and works after it compiles.
-  Even though Rust is a safety-oriented language, something as unstable and low-level as an in-dev operating system will almost certainly have problems in many cases and may completely break on even the slightest critical change.
-  Also, make sure you check how the unmodified version runs on your machine before making any changes. Else, you won't have anything to compare to, and it will generally just lead to confusion. TLDR: Rebuild and test boot often.
+## Important Places to Contribute
 
-* To run the **ZFS** tests:
- * Create the zfs.img only once. If one has not been created, run `make filesystem/apps/zfs/zfs.img` before booting into Redox.
- * Run `open zfs.img` to open the created ZFS image.
- * Run `file /home/LICENSE.md` twice to ensure ARC isn't broken.
+Before starting to contribute, we recommend reading the [Website FAQ](https://www.redox-os.org/faq/) and the [Redox Book](https://doc.redox-os.org/book/).
 
-## <a name="style-guidelines"> Style Guidelines </a>
+You can contribute to the Redox documentation and code on the following repositories (non-exhaustive, easiest first):
 
-### <a name="rust-style-guidelines"> Rust </a>
+- [Website](https://gitlab.redox-os.org/redox-os/website)
+- [Book](https://gitlab.redox-os.org/redox-os/book) - High-level documentation
+- [Build System Configuration](https://gitlab.redox-os.org/redox-os/redox) - Our main repository
+- [Cookbook](https://gitlab.redox-os.org/redox-os/cookbook) - Software Ports System
+- [Orbital](https://gitlab.redox-os.org/redox-os/orbital) - Display Server and Window Manager
+- [pkgutils](https://gitlab.redox-os.org/redox-os/pkgutils) - Package Manager
+- [resist](https://gitlab.redox-os.org/redox-os/resist) - Redox System Interface Specifications and Tests (also has POSIX tests)
+- [acid](https://gitlab.redox-os.org/redox-os/acid) - Redox Test Suite
+- [relibc](https://gitlab.redox-os.org/redox-os/relibc) - Redox C Library
+- [libredox](https://gitlab.redox-os.org/redox-os/libredox) - Redox System Library
+- [netstack](https://gitlab.redox-os.org/redox-os/netstack) - Network Stack
+- [Bootloader](https://gitlab.redox-os.org/redox-os/bootloader)
+- [RedoxFS](https://gitlab.redox-os.org/redox-os/redoxfs) - Default filesystem
+- [Drivers](https://gitlab.redox-os.org/redox-os/drivers) - Device Drivers
+- [Base](https://gitlab.redox-os.org/redox-os/base) - Essential system daemons
+- [Kernel](https://gitlab.redox-os.org/redox-os/kernel)
 
-Since **Rust** is a relatively small and new language compared to others like _C_, there's really only one standard. Just follow the official Rust standards for formatting, and maybe run `rustfmt` on your changes, until we setup the CI system to do it automatically.
+To see all Redox repositories open the [redox-os group](https://gitlab.redox-os.org/redox-os).
 
-### <a name="git-style-guidelines"> Git </a>
+### Skill Levels
 
-* You should have a fork of the repository on **GitHub** and a local copy on your computer. The local copy should have two remotes; `upstream` and `origin`, `upstream` should be set to the main repository and `origin` should be your fork.
-* When you start to make changes, you will want to create a separate branch, and keep the `master` branch of your fork identical to the main repository, so that you can compare your changes with the main branch and test out a more stable build if you need to.
-* Usually, when syncing your local copy with the master branch, you'll want to rebase instead of merge. This is because it will create duplicate commits that don't actually do anything when merged into the master branch. You can do this in one command with `git pull upstream --rebase`. This will pull from the upstream, then roll back to the current state of the upstream, and "replay" your changes on top of it. Make sure you commit before doing this, though. Git won't be able to rebase if you don't.
-* Prefer to omit the `-m` when using `git commit`. This opens your editor and should help get you in the habit of writing longer commit messages.
-* Commit messages should describe their changes in present tense, e.g. "`Add stuff to file.ext`" instead of "`added stuff to file.ext`". This makes sense as sometimes when you revert back, then run through commits one-by-one, you want to see what a commit will do, instead of just what the person did when they made the commit. It's also just being consistent.
-* Try to remove useless duplicate/merge commits from PRs as these don't do anything except clutter up history and make it harder to read.
+If you don't know programming:
 
-## <a name="other"> Other Ways to Contribute </a>
+- Test the [daily images](https://static.redox-os.org/img/) on your computer and add the report on the [Hardware Compatibility](https://gitlab.redox-os.org/redox-os/redox/-/blob/master/HARDWARE.md) list
+- Monitor and warn developers if the [daily images](https://static.redox-os.org/img/) are outdated
+- Use and test Redox, and file issues for bugs or needed features (please check for duplicates first)
+- Fix and write documentation
+- Find or fix typos in configuration
 
-If you're not big on coding, but you still want to help keep the project going, you can still contribute/support in a variety of ways! We'll try to find a way to use anything you have to offer. 
+If you don't know how to code in Rust, but know other programming languages:
 
-### <a name="design"> Design </a>
+- Web development on the website (we don't accept JavaScript code)
+- Write unit tests (may require minimal knowledge of Rust)
+- Port C/C++ programs to Redox (read the `TODO`s of the recipes on the [WIP category](https://gitlab.redox-os.org/redox-os/cookbook/-/tree/master/recipes/wip?ref_type=heads))
+- Port programs to Redox
 
-If you're a good designer, whether it's _2D graphics, 3D graphics, interfaces, web design, you can help. We need logos, UI design, UI skins, app icons, desktop backgrounds, etc_. More information to come on this in the future, for now just join [the chat](#chat) and ask about graphic design.
+If you know how to code in Rust, but don't know operating system development:
 
-### <a name="patreon"> Patreon </a>
+- See the [easy](https://gitlab.redox-os.org/groups/redox-os/-/issues/?label_name[]=easy) issues
+- See the "[good first issue](https://gitlab.redox-os.org/groups/redox-os/-/issues/?label_name[]=good%20first%20issue)" issues
+- See the [help wanted](https://gitlab.redox-os.org/groups/redox-os/-/issues/?label_name[]=help%20wanted) issues (it's worth noting the skill level varies between projects, but a large subset of these should be approachable by contributors familiar with regular Rust/Unix application programming)
+- Improve the package manager, or other meta-tools like `redoxer` or `installer`
+- Improve the [Ion](https://gitlab.redox-os.org/redox-os/ion) shell, or other high-level or mid-level projects
+- Port Rust programs to Redox, possibly including dependencies, and C library extensions if necessary (also look for issues with the `port` label)
+- Improve program compatibility in relibc by e.g. implementing missing APIs
 
-Our **BDFL**, [jackpot51](https://gitlab.redox-os.org/jackpot51), has a [Patreon campaign](https://www.patreon.com/redox_os)! **All money received will go towards Redox OS development**. If you donate, you will be listed in the **Redox credits** as one of the people that made Redox OS possible. You'll also get other rewards the more you donate. However, please don't donate if you can't afford it.
+If you know how to code in Rust, and have experience with systems software/OS development:
 
-<!--
+- Familiarize yourself with the repository layout, code, and build system
+- Update old code to remove warnings
+- Search for `TODO`, `FIXME`, `BUG`, `UNOPTIMIZED`, `REWRITEME`, `DOCME`, and `PRETTYFYME` and fix the code you find
+- Look in general for issues with the following labels: `critical`, `help wanted`, `feature`, `enhancement`, `bug` or `port`
+- Improve internal libraries and abstractions, e.g. `libredox`, `redox-scheme`, `redox-event` etc.
+- Help upstream Redox-specific functionality to the Rust ecosystem
+- Improve Redox's automated testing suite and continuous integration testing processes
+- Improve, profile, and optimize code, especially in the kernel, filesystem, and network stack
+- Improve or write device drivers
 
-POSSIBLE OTHER TOPICS TO INCLUDE
-- Merch (maybe in the future)
-- Sound Design (things like notifications, popups, etc. for orbital)
-- Video Production/Motion Graphics (tutorials, introduction videos, etc.)
-- Non-Rust programming, scripting, etc. (if we even have a need for this)
-- Hosting/download/git mirrors (this is not needed right now, but when downloads increase it may be necessary)
+For those who want to contribute to the Redox GUI, our GUI strategy has recently changed.
 
--->
+- We are improving the [Orbital](https://gitlab.redox-os.org/redox-os/orbital) display server and window manager, you can read more about it on [this tracking issue](https://gitlab.redox-os.org/redox-os/redox/-/issues/1430).
+- Redox is in the process of adopting other Rust-written GUI toolkits, such as [Iced](https://iced.rs) and [Slint](https://slint-ui.com/). Please check out those projects if this is your area of interest.
+- OrbTk is in maintenance mode, and its developers have moved to other projects such as the ones below. There is currently no Redox-specific GUI development underway.
 
+## Priorities
+
+You can use the following GitLab label filters to know our development priorities on the moment:
+
+- [Critical](https://gitlab.redox-os.org/groups/redox-os/-/issues/?label_name[]=critical)
+- [High-priority](https://gitlab.redox-os.org/groups/redox-os/-/issues/?label_name[]=high-priority)
+- [Medium-priority](https://gitlab.redox-os.org/groups/redox-os/-/issues/?label_name[]=medium-priority)
+- [Low-priority](https://gitlab.redox-os.org/groups/redox-os/-/issues/?label_name[]=low-priority)
+
+## RFCs
+
+For more significant changes that affect Redox's architecture, we use the [Request for Comments](https://gitlab.redox-os.org/redox-os/rfcs) repository.
+
+## Build System
+
+To download the build system use the following commands:
+
+(You need to have [curl](https://curl.se/) installed on your system)
+
+```sh
+curl -sf https://gitlab.redox-os.org/redox-os/redox/raw/master/podman_bootstrap.sh -o podman_bootstrap.sh
+```
+
+```sh
+time bash -e podman_bootstrap.sh
+```
+
+To start the compilation of the default recipes run the command below:
+
+```sh
+make all
+```
+
+In case your operating system does not use SELinux, you must set the `USE_SELINUX` to `0` when calling `make all`, otherwise you might experience errors:
+
+```sh
+make all USE_SELINUX=0
+```
+
+You can find the build system organization and commands on the [Build System](https://doc.redox-os.org/book/build-system-reference.html) page.
+
+## Developer FAQ
+
+You can see the most common questions and problems on the [Developer FAQ](https://doc.redox-os.org/book/developer-faq.html) page.
+
+## Porting Software
+
+You can read how to use the Cookbook recipe system to port applications on the [Porting Applications using Recipes](https://doc.redox-os.org/book/porting-applications.html) page.
+
+## Libraries and APIs
+
+You can read the [Libraries and APIs](https://doc.redox-os.org/book/libraries-apis.html) page to learn about the libraries and APIs used in Redox.
+
+## Visual Studio Code (VS Code) Configuration
+
+To learn how to configure your VS Code to do Redox development please read the information below the [Visual Studio Code Configuration](https://doc.redox-os.org/book/coding-and-building.html#visual-studio-code-configuration) section.
+
+## Development Tips
+
+You can find important tips on the [Development Tips](https://doc.redox-os.org/book/coding-and-building.html#development-tips) section.
+
+## References
+
+We maintain a list of wikis, articles and videos to learn Rust, OS development and computer science on the [References](https://doc.redox-os.org/book/references.html) page.
+
+If you are skilled there's a possibility that they could improve your knowledge in some way.
+
+## Other Ways to Contribute
+
+If you aren't good on coding, but you still want to help keep the project going, you can contribute and support in a variety of ways! We'll try to find a way to use anything you have to offer. 
+
+### Design
+
+If you're a good designer, whether it's 2D graphics, 3D graphics, interfaces, web design, you can help. We need logos, UI design, UI skins, app icons, desktop backgrounds, etc.
+
+- [Redox backgrounds](https://gitlab.redox-os.org/redox-os/backgrounds) - You can send your wallpapers on this repository.
+- [Redox assets](https://gitlab.redox-os.org/redox-os/assets) - You can send your logos, icons and themes on this repository.
+
+If you have questions about the graphic design, ask us on the [Chat](https://doc.redox-os.org/book/chat.html).
+
+### Donate to Redox
+
+If you are interested in donating to the Redox OS Nonprofit, you can find instructions on the [Donate](https://www.redox-os.org/donate/) page.

@@ -1,58 +1,65 @@
-build/bootloader: bootloader/$(ARCH)/**
-	mkdir -p build
-	nasm -f bin -o $@ -D ARCH_$(ARCH) -ibootloader/$(ARCH)/ bootloader/$(ARCH)/disk.asm
+# Configuration file with the commands configuration of the Redox image
 
-build/harddrive.bin: build/filesystem.bin bootloader/$(ARCH)/**
-	nasm -f bin -o $@ -D ARCH_$(ARCH) -D FILESYSTEM=$< -ibootloader/$(ARCH)/ bootloader/$(ARCH)/disk.asm
-
-build/harddrive.bin.gz: build/harddrive.bin
-	gzip -k -f $<
-
-build/livedisk.bin: build/kernel_live bootloader/$(ARCH)/**
-	nasm -f bin -o $@ -D ARCH_$(ARCH) -D KERNEL=$< -ibootloader/$(ARCH)/ bootloader/$(ARCH)/disk.asm
-
-build/livedisk.bin.gz: build/livedisk.bin
-	gzip -k -f $<
-
-build/livedisk.iso: build/livedisk.bin.gz
-	rm -rf build/iso/
-	mkdir -p build/iso/
-	cp -RL isolinux build/iso/
-	cp $< build/iso/livedisk.gz
-	genisoimage -o $@ -b isolinux/isolinux.bin -c isolinux/boot.cat \
-					-no-emul-boot -boot-load-size 4 -boot-info-table \
-					build/iso/
-	isohybrid $@
-
-bootloader-efi/build/redox_bootloader/boot.efi:
-	$(MAKE) -C bootloader-efi build/redox_bootloader/boot.efi
-
-build/bootloader.efi: bootloader-efi/build/redox_bootloader/boot.efi
-	cp $< $@
-
-build/harddrive-efi.bin: build/bootloader.efi build/filesystem.bin
-	dd if=/dev/zero of=$@.partial bs=1048576 count=4
-	mkfs.vfat $@.partial
-	mmd -i $@.partial efi
-	mmd -i $@.partial efi/boot
-	mcopy -i $@.partial $< ::efi/boot/bootx64.efi
-	mmd -i $@.partial redox_bootloader
-	mcopy -i $@.partial -s bootloader-efi/res ::redox_bootloader
-	cat $@.partial build/filesystem.bin > $@
-
-build/harddrive-efi.bin.gz: build/harddrive-efi.bin
-	gzip -k -f $<
-
-build/livedisk-efi.iso: build/bootloader.efi build/kernel_live
-	dd if=/dev/zero of=$@.partial bs=1048576 count=272
-	mkfs.vfat $@.partial
-	mmd -i $@.partial efi
-	mmd -i $@.partial efi/boot
-	mcopy -i $@.partial $< ::efi/boot/bootx64.efi
-	mmd -i $@.partial redox_bootloader
-	mcopy -i $@.partial -s bootloader-efi/res ::redox_bootloader
-	mcopy -i $@.partial -s build/kernel_live ::redox_bootloader/kernel
+$(BUILD)/harddrive.img: $(HOST_FSTOOLS) $(REPO_TAG)
+	mkdir -p $(BUILD)
+	rm -rf $@  $@.partial
+	-$(FUMOUNT) /tmp/redox_installer || true
+	FILESYSTEM_SIZE=$(FILESYSTEM_SIZE) && \
+	if [ -z "$$FILESYSTEM_SIZE" ] ; then \
+	FILESYSTEM_SIZE=$(shell $(INSTALLER) --filesystem-size -c $(FILESYSTEM_CONFIG)); \
+	fi && \
+	truncate -s "$$FILESYSTEM_SIZE"m $@.partial
+	umask 002 && $(INSTALLER) $(INSTALLER_OPTS) -c $(FILESYSTEM_CONFIG) $@.partial
 	mv $@.partial $@
 
-build/livedisk-efi.bin.gz: build/livedisk-efi.bin
-	gzip -k -f $<
+$(BUILD)/redox-live.iso: $(HOST_FSTOOLS) $(REPO_TAG) redox.ipxe
+	mkdir -p $(BUILD)
+	rm -rf $@  $@.partial
+	-$(FUMOUNT) /tmp/redox_installer || true
+	FILESYSTEM_SIZE=$(FILESYSTEM_SIZE) && \
+	if [ -z "$$FILESYSTEM_SIZE" ] ; then \
+	FILESYSTEM_SIZE=$(shell $(INSTALLER) --filesystem-size -c $(FILESYSTEM_CONFIG)); \
+	fi && \
+	truncate -s "$$FILESYSTEM_SIZE"m $@.partial
+	umask 002 && $(INSTALLER) $(INSTALLER_OPTS) -c $(FILESYSTEM_CONFIG) --write-bootloader="$(BUILD)/bootloader-live.efi" --live $@.partial
+	mv $@.partial $@
+	cp redox.ipxe $(BUILD)/redox.ipxe
+
+$(BUILD)/filesystem.img: $(HOST_FSTOOLS) $(REPO_TAG)
+	mkdir -p $(BUILD)
+	-$(FUMOUNT) $(MOUNT_DIR) || true
+	rm -rf $@  $@.partial $(MOUNT_DIR)
+	-$(FUMOUNT) /tmp/redox_installer || true
+	FILESYSTEM_SIZE=$(FILESYSTEM_SIZE) && \
+	if [ -z "$$FILESYSTEM_SIZE" ] ; then \
+	FILESYSTEM_SIZE=$(shell $(INSTALLER) --filesystem-size -c $(FILESYSTEM_CONFIG)); \
+	fi && \
+	truncate -s "$$FILESYSTEM_SIZE"m $@.partial
+	$(REDOXFS_MKFS) $(REDOXFS_MKFS_FLAGS) $@.partial
+	mkdir -p $(MOUNT_DIR)
+	$(REDOXFS) $@.partial $(MOUNT_DIR)
+	sleep 1
+	pgrep redoxfs
+	umask 002 && $(INSTALLER) $(INSTALLER_OPTS) -c $(FILESYSTEM_CONFIG) $(MOUNT_DIR)
+	sync
+	-$(FUMOUNT) $(MOUNT_DIR) || true
+	rm -rf $(MOUNT_DIR)
+	mv $@.partial $@
+
+mount: $(HOST_FSTOOLS) FORCE
+	mkdir -p $(MOUNT_DIR)
+	$(REDOXFS) $(BUILD)/harddrive.img $(MOUNT_DIR)
+	sleep 2
+	pgrep redoxfs
+
+mount_extra: $(HOST_FSTOOLS) FORCE
+	mkdir -p $(MOUNT_DIR)
+	$(REDOXFS) $(BUILD)/extra.img $(MOUNT_DIR)
+	sleep 2
+	pgrep redoxfs
+
+unmount: FORCE
+	sync
+	-$(FUMOUNT) $(MOUNT_DIR) || true
+	rm -rf $(MOUNT_DIR)
+	-$(FUMOUNT) /tmp/redox_installer || true

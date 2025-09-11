@@ -1,3 +1,5 @@
+# Configuration file to setup the Docker container of Redox
+
 FROM rustlang/rust:nightly
 
 ENV IMAGE_NAME=redox-os-docker
@@ -30,8 +32,8 @@ RUN set -ex;                                                                   \
         x86-64-unknown-redox-binutils                                          \
         x86-64-unknown-redox-gcc                                               \
         ;                                                                      \
-    cargo install xargo;                                                       \
     cargo install cargo-config;                                                \
+    cargo install just@1.16.0;                                                 \
     apt-get autoremove -q -y;                                                  \
     apt-get clean -q -y;                                                       \
     rm -rf /var/lib/apt/lists/*
